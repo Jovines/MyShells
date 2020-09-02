@@ -19,18 +19,22 @@ function FILE_COUNT(){
         echo "$file"
     elif test -d "$file";then
         ((folder_count++))
+        echo "$file"
+        cd "$file"||return
         git config --local  user.name $user_name
         git config --local user.email $user_email
-        git submodule foreach  git config --local  user.name $user_name
-        git submodule foreach  git config --local user.email $user_email
-        echo "$file"
+#       git submodule foreach  git config --local  user.name $user_name
+#       git submodule foreach  git config --local user.email $user_email
         if [ "$mode" == "s" ]; then
-            cd "$file"||return
             (FILE_COUNT)
-            cd ..
         fi
+        cd ..
     fi
     done
 }
 
+git config --local  user.name $user_name
+git config --local user.email $user_email
+# git submodule foreach  git config --local  user.name $user_name
+# git submodule foreach  git config --local user.email $user_email
 FILE_COUNT
